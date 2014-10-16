@@ -6,7 +6,7 @@
   "authors": [
     "Sayantan Chaudhuri <sayantan.chaudhuri+bower@gmail.com>"
   ],
-  "description": "An implementation of the Adjacency and Incidence Framework mesh data-structure.",
+  "description": "A naïve and high-level implementation of the Adjacency and Incidence Framework mesh data-structure.",
   "moduleType": [
     "amd",
     "globals",
