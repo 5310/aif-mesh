@@ -33,4 +33,4 @@ Having written this implementation for a quick prototype, I haven't had the chan
 
 ( It'll still be a bit weird what with relying on ES6 features despite not being an ES6 module or using ES6 classes. In particular trying to extend the built-in Set class was an attempt in futility that the ES6 classes promise to fix. )
 
-The source file `aifm-es6.js` should be sensible enough to infer usage, I think. Please take a look there if you want more!
+The source file [`aifm-es6.js`](https://github.com/5310/aif-mesh/blob/master/aifm-es6.js) should be sensible enough to infer usage, I think. Please take a look there if you want more!
