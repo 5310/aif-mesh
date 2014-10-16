@@ -7,23 +7,24 @@
   "devDependencies": {
     "browserify": "^5.11.1",
     "browserify-shim": "^3.7.0",
-    "tape": "^2.14.0",
+    "traceur": "0.0.72",
     "uglifyify": "^2.5.0"
   },
   "scripts": {
-    "test": "node ./tests/tests.js",
-    "dist": "browserify ./index.js --standalone aifm > ./dist/aifm.js"
+    "build": "./node_modules/traceur/traceur --script ./aifm-es6.js --out aifm-es5.js --modules commonjs",
+    "dist": "browserify ./aifm-es6.js --standalone aifm > ./dist/aifm-es6.js && browserify -t [ uglifyify ] ./aifm-es5.js --standalone aifm > ./dist/aifm-es5.js",
+    "chore": "npm run build && npm run dist"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/5310/aifm.git"
   },
   "keywords": [
-    "aif"
+    "aif",
     "class",
     "data-structure",
     "graph",
-    "mesh",
+    "mesh"
   ],
   "author": {
     "name": "Sayantan Chaudhuri",
@@ -37,9 +38,11 @@
   "homepage": "https://github.com/5310/aifm",
   "browserify": {
     "transform": [
-      "browserify-shim",
-      "uglifyify"
+      "browserify-shim"
     ]
   },
-  "browserify-shim": {}
+  "browserify-shim": {},
+  "dependencies": {
+    "traceur-runtime": "^0.0.59"
+  }
 }
