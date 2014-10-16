@@ -1,0 +1,45 @@
+{
+  "name": "aif-mesh",
+  "private": true,
+  "version": "0.1.0",
+  "description": "An implementation of the Adjacency and Incidence Framework mesh data-structure.",
+  "main": "index.js",
+  "devDependencies": {
+    "browserify": "^5.11.1",
+    "browserify-shim": "^3.7.0",
+    "tape": "^2.14.0",
+    "uglifyify": "^2.5.0"
+  },
+  "scripts": {
+    "test": "node ./tests/tests.js",
+    "dist": "browserify ./index.js --standalone aifm > ./dist/aifm.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/5310/aifm.git"
+  },
+  "keywords": [
+    "aif"
+    "class",
+    "data-structure",
+    "graph",
+    "mesh",
+  ],
+  "author": {
+    "name": "Sayantan Chaudhuri",
+    "email": "sayantan.chaudhuri+npm@gmail.com",
+    "url": "https:google.com/+SayantanChaudhuri"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/5310/aifm/issues"
+  },
+  "homepage": "https://github.com/5310/aifm",
+  "browserify": {
+    "transform": [
+      "browserify-shim",
+      "uglifyify"
+    ]
+  },
+  "browserify-shim": {}
+}

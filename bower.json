@@ -1,0 +1,32 @@
+{
+  "name": "aif-mesh",
+  "main": "dist/aifm.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/5310/aifm",
+  "authors": [
+    "Sayantan Chaudhuri <sayantan.chaudhuri+bower@gmail.com>"
+  ],
+  "description": "An implementation of the Adjacency and Incidence Framework mesh data-structure.",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "aif"
+    "class",
+    "data-structure",
+    "graph",
+    "mesh",
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "scratch"
+  ]
+}
