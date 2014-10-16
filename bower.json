@@ -1,6 +1,6 @@
 {
   "name": "aif-mesh",
-  "main": "dist/aifm.js",
+  "main": "dist/aifm-es6.js",
   "version": "0.1.0",
   "homepage": "https://github.com/5310/aifm",
   "authors": [
