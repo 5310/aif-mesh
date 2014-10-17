@@ -1,4 +1,5 @@
 (function() {
+  var setalg = require('set-algebra');
   var ID_MIN = 1000000000000000;
   var ID_MAX = 9007199254740992;
   var ElementSet = function ElementSet(elements) {
@@ -257,40 +258,6 @@
   var SimpleMesh = function SimpleMesh() {
     Mesh.call(this);
   };
-  SimpleMesh.getCommonEdgeOfVertPair = function getCommonEdgeOfVertPair(vert1, vert2) {
-    var edges1 = vert1.edges;
-    var edges2 = vert2.edges;
-    var edgesUnion = new Set(edges1);
-    var edgesCommon;
-    var edge;
-    for (var $__0 = edges2[Symbol.iterator](),
-        $__1; !($__1 = $__0.next()).done; ) {
-      edge = $__1.value;
-      {
-        edgesUnion.add(edge);
-      }
-    }
-    if (edgesUnion.size == edges1.size + edges2.size) {
-      return new ElementSet();
-    } else {
-      for (var $__2 = edges2[Symbol.iterator](),
-          $__3; !($__3 = $__2.next()).done; ) {
-        edge = $__3.value;
-        {
-          edgesUnion.delete(edge);
-        }
-      }
-      edgesCommon = new ElementSet(edges1);
-      for (var $__4 = edgesUnion[Symbol.iterator](),
-          $__5; !($__5 = $__4.next()).done; ) {
-        edge = $__5.value;
-        {
-          edgesCommon.delete(edge);
-        }
-      }
-      return edgesCommon;
-    }
-  };
   SimpleMesh.validateEdgeLoop = function validate(edges) {
     var list = $traceurRuntime.spread(edges);
     if (list.length < 3) {
@@ -348,7 +315,7 @@
     if (!this.verts.has(vert1.id) || !this.verts.has(vert2.id)) {
       throw new ReferenceError('Vert not in mesh!');
     }
-    if ((validate || validate === undefined) && SimpleMesh.getCommonEdgeOfVertPair.size) {
+    if ((validate || validate === undefined) && setalg.n(vert1.edges, vert2.edges).size) {
       throw new ReferenceError('Vert pair already has edge in common!');
     }
     var edge = new Edge();
@@ -387,14 +354,14 @@
     var commonEdge;
     for (var i = 1; i < list.length; i++) {
       current = list[i];
-      commonEdge = SimpleMesh.getCommonEdgeOfVertPair(previous, current);
+      commonEdge = setalg.n(previous.edges, current.edges);
       if (commonEdge.size < 1) {
         throw new TypeError('Degenerate vert-loop!');
       }
       edges.push($traceurRuntime.spread(commonEdge)[0]);
       previous = current;
     }
-    commonEdge = SimpleMesh.getCommonEdgeOfVertPair(list[list.length - 1], list[0]);
+    commonEdge = setalg.n(list[list.length - 1].edges, list[0].edges);
     if (commonEdge.size < 1) {
       throw new TypeError('Degenerate vert-loop!');
     }

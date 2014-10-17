@@ -15,6 +15,8 @@ However, most modern browsers, and Node.js v0.11 with the `--harmony` flag, can 
 
 Transpiled ES5 versions have still been included for the UMD and CommonJS versions regardless. The CommonJS version, or rather, the NPM module, automatically loads the ES5 version if the ES6 one fails to. But the specific UMD version will have to be added to an HTML file manually.
 
+UMD version exports the global namespace `aifm`.
+
 ## Brief Outline
 
 All the geometric elements of the mesh only contain references to their adjacent and incident elements. 
@@ -37,9 +39,9 @@ The source file [`aifm-es6.js`](https://github.com/5310/aif-mesh/blob/master/aif
 
 ## Roadmap
 
-0. Find or create a separate set operations library.
-1. Remove element-in-common queries and use set operations instead.
-2. Add a cell element relations and naïve `addVolume` helpers. 
+1. Add a cell element relations and naïve `addVolume` helpers. 
    -  Validating potentially degenerate arbitrary valence cells on `SimpleMesh` is out of the question! Let it focus on being a surface-mesh.
-3. Make proper!
-4. Implement a tetra-mesh volume mesh with proper validation.
+2. Properly document API and usage.
+3. Add badges!
+4. Figure out why UMD builds cannot be required by other UMD builds. (set-algebra, in this case, when externalized.)
+5. Implement a tetra-mesh volume mesh with proper validation.
