@@ -37,9 +37,8 @@ The source file [`aifm-es6.js`](https://github.com/5310/aif-mesh/blob/master/aif
 
 ## Roadmap
 
-1. Implement face validation for `SimpleMesh`.
-2. Override `SimpleMesh.addFace` to support verts too.
-3. Add a cell element relations and naïve `addVolume` helpers. 
+1. Move element-in-common queries to element classes themselves.
+2. Add a cell element relations and naïve `addVolume` helpers. 
    -  Validating potentially degenerate arbitrary valence cells on `SimpleMesh` is out of the question! Let it focus on being a surface-mesh.
-4. Make proper!
-5. Implement a tetra-mesh volume mesh with proper validation.
+3. Make proper!
+4. Implement a tetra-mesh volume mesh with proper validation.
