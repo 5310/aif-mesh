@@ -2,7 +2,7 @@
   var ID_MIN = 1000000000000000;
   var ID_MAX = 9007199254740992;
   var ElementSet = function ElementSet(elements) {
-    this._set = elements instanceof Array ? new Set(elements) : new Set();
+    this._set = elements !== undefined ? new Set(elements) : new Set();
     this.size = 0;
   };
   ElementSet.prototype.add = function add(value) {
@@ -139,16 +139,17 @@
   };
   Edge.prototype.$edges = function $edges() {
     var results = new ElementSet();
+    var edge;
     for (var $__0 = this.vert1.edges[Symbol.iterator](),
         $__1; !($__1 = $__0.next()).done; ) {
-      var edge = $__1.value;
+      edge = $__1.value;
       {
         results.add(edge);
       }
     }
     for (var $__2 = this.vert2.edges[Symbol.iterator](),
         $__3; !($__3 = $__2.next()).done; ) {
-      var edge = $__3.value;
+      edge = $__3.value;
       {
         results.add(edge);
       }
@@ -256,20 +257,99 @@
   var SimpleMesh = function SimpleMesh() {
     Mesh.call(this);
   };
+  SimpleMesh.getCommonEdgeOfVertPair = function getCommonEdgeOfVertPair(vert1, vert2) {
+    var edges1 = vert1.edges;
+    var edges2 = vert2.edges;
+    var edgesUnion = new Set(edges1);
+    var edgesCommon;
+    var edge;
+    for (var $__0 = edges2[Symbol.iterator](),
+        $__1; !($__1 = $__0.next()).done; ) {
+      edge = $__1.value;
+      {
+        edgesUnion.add(edge);
+      }
+    }
+    if (edgesUnion.size == edges1.size + edges2.size) {
+      return new ElementSet();
+    } else {
+      for (var $__2 = edges2[Symbol.iterator](),
+          $__3; !($__3 = $__2.next()).done; ) {
+        edge = $__3.value;
+        {
+          edgesUnion.delete(edge);
+        }
+      }
+      edgesCommon = new ElementSet(edges1);
+      for (var $__4 = edgesUnion[Symbol.iterator](),
+          $__5; !($__5 = $__4.next()).done; ) {
+        edge = $__5.value;
+        {
+          edgesCommon.delete(edge);
+        }
+      }
+      return edgesCommon;
+    }
+  };
+  SimpleMesh.validateEdgeLoop = function validate(edges) {
+    var list = $traceurRuntime.spread(edges);
+    if (list.length < 3) {
+      return false;
+    }
+    var start;
+    var chain;
+    var v11 = list[0].vert1;
+    var v12 = list[0].vert2;
+    var v21 = list[1].vert1;
+    var v22 = list[1].vert2;
+    if (v11 === v21) {
+      start = v12;
+      chain = v22;
+    } else if (v11 === v22) {
+      start = v12;
+      chain = v21;
+    } else if (v12 === v21) {
+      start = v11;
+      chain = v22;
+    } else if (v12 === v22) {
+      start = v11;
+      chain = v21;
+    } else {
+      return false;
+    }
+    for (var i = 2; i < list.length; i++) {
+      v21 = list[i].vert1;
+      v22 = list[i].vert2;
+      if (chain === v21) {
+        chain = v22;
+      } else if (chain === v22) {
+        chain = v21;
+      } else {
+        return false;
+      }
+    }
+    if (chain !== start) {
+      return false;
+    }
+    return true;
+  };
   SimpleMesh.prototype = Object.create(SimpleMesh.prototype);
-  SimpleMesh.prototype.addVert = function addVert(x, y, z) {
+  SimpleMesh.prototype.addVertByCoords = function addVertByCoords(x, y, z) {
     var vert = new Vert();
     vert.annotation.x = x ? x : 0;
     vert.annotation.y = y ? y : 0;
     vert.annotation.z = z ? z : 0;
     return Mesh.prototype.addVert.call(this, vert);
   };
-  SimpleMesh.prototype.addEdge = function addEdge(vert1, vert2) {
-    if (vert1 === vert2) {
+  SimpleMesh.prototype.addEdgeByVertPair = function addEdgeByVertPair(vert1, vert2, validate) {
+    if ((validate || validate === undefined) && vert1 === vert2) {
       throw new TypeError('Degenerate edge!');
     }
     if (!this.verts.has(vert1.id) || !this.verts.has(vert2.id)) {
       throw new ReferenceError('Vert not in mesh!');
+    }
+    if ((validate || validate === undefined) && SimpleMesh.getCommonEdgeOfVertPair.size) {
+      throw new ReferenceError('Vert pair already has edge in common!');
     }
     var edge = new Edge();
     edge.vert1 = vert1;
@@ -278,9 +358,9 @@
     vert2.edges.add(edge);
     return Mesh.prototype.addEdge.call(this, edge);
   };
-  SimpleMesh.prototype.addFace = function addFace(edges) {
-    if (edges.length < 3 || edges.size < 3) {
-      throw new TypeError('Degenerate face!');
+  SimpleMesh.prototype.addFaceByEdgeLoop = function addFaceByEdgeLoop(edges, validate) {
+    if ((validate || validate === undefined) && !SimpleMesh.validateEdgeLoop(edges)) {
+      throw new TypeError('Degenerate edge-loop!');
     }
     var face = new Face();
     for (var $__0 = edges[Symbol.iterator](),
@@ -295,6 +375,31 @@
       }
     }
     return Mesh.prototype.addFace.call(this, face);
+  };
+  SimpleMesh.prototype.addFaceByVertLoop = function addFaceByVertLoop(verts) {
+    if (verts.length < 3 || verts.size < 3) {
+      throw new TypeError('Degenerate vert-loop!');
+    }
+    var list = $traceurRuntime.spread(verts);
+    var edges = [];
+    var previous = list[0];
+    var current;
+    var commonEdge;
+    for (var i = 1; i < list.length; i++) {
+      current = list[i];
+      commonEdge = SimpleMesh.getCommonEdgeOfVertPair(previous, current);
+      if (commonEdge.size < 1) {
+        throw new TypeError('Degenerate vert-loop!');
+      }
+      edges.push($traceurRuntime.spread(commonEdge)[0]);
+      previous = current;
+    }
+    commonEdge = SimpleMesh.getCommonEdgeOfVertPair(list[list.length - 1], list[0]);
+    if (commonEdge.size < 1) {
+      throw new TypeError('Degenerate vert-loop!');
+    }
+    edges.push($traceurRuntime.spread(commonEdge)[0]);
+    return this.addFaceByEdgeLoop(edges, false);
   };
   module.exports = {
     ElementSet: ElementSet,
