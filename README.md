@@ -37,7 +37,8 @@ The source file [`aifm-es6.js`](https://github.com/5310/aif-mesh/blob/master/aif
 
 ## Roadmap
 
-1. Move element-in-common queries to element classes themselves.
+0. Find or create a separate set operations library.
+1. Remove element-in-common queries and use set operations instead.
 2. Add a cell element relations and naïve `addVolume` helpers. 
    -  Validating potentially degenerate arbitrary valence cells on `SimpleMesh` is out of the question! Let it focus on being a surface-mesh.
 3. Make proper!
