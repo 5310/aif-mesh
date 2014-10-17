@@ -20,6 +20,8 @@
     "url": "https://github.com/5310/aifm.git"
   },
   "keywords": [
+    "es5",
+    "es6",
     "aif",
     "class",
     "data-structure",
@@ -41,8 +43,9 @@
       "browserify-shim"
     ]
   },
-  "browserify-shim": {},
+  "browserify": {},
   "dependencies": {
+    "set-algebra": "git://github.com/5310/set-algebra",
     "traceur-runtime": "^0.0.59"
   }
 }

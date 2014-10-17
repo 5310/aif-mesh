@@ -13,6 +13,8 @@
     "node"
   ],
   "keywords": [
+    "es5",
+    "es6",
     "aif"
     "class",
     "data-structure",
@@ -28,5 +30,8 @@
     "test",
     "tests",
     "scratch"
-  ]
+  ],
+  "dependencies": {
+    "set-algebra": "5310/set-algebra"
+  }
 }

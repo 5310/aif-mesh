@@ -4,6 +4,11 @@
 
 
 
+
+    // Requires.
+
+    var setalg = require('set-algebra');
+
     // Bounds for random element id generation.
 
     const ID_MIN = 1000000000000000;
@@ -238,32 +243,6 @@
         Mesh.call(this);
     };
 
-    SimpleMesh.getCommonEdgeOfVertPair = function getCommonEdgeOfVertPair( vert1, vert2 ) {
-
-        var edges1 = vert1.edges;
-        var edges2 = vert2.edges;
-        var edgesUnion = new Set(edges1);
-        var edgesCommon;
-        var edge;
-
-        for ( edge of edges2 ) {
-            edgesUnion.add(edge);
-        }
-
-        if ( edgesUnion.size == edges1.size + edges2.size ) {
-            return new ElementSet();
-        } else {
-            for ( edge of edges2 ) {
-                edgesUnion.delete( edge );
-            }
-            edgesCommon = new ElementSet( edges1 );
-            for ( edge of edgesUnion ) {
-                edgesCommon.delete( edge );
-            }
-            return edgesCommon;
-        }
-
-    };
     SimpleMesh.validateEdgeLoop = function validate( edges ) {
 
         var list = [ ...edges ];
@@ -330,7 +309,7 @@
         if ( !this.verts.has( vert1.id ) || !this.verts.has( vert2.id ) ) {
             throw new ReferenceError('Vert not in mesh!');
         }
-        if ( ( validate || validate === undefined )  && SimpleMesh.getCommonEdgeOfVertPair.size ) {
+        if ( ( validate || validate === undefined )  && setalg.n(vert1.edges, vert2.edges).size ) {
             throw new ReferenceError('Vert pair already has edge in common!');
         }
         var edge = new Edge();
@@ -365,14 +344,14 @@
         var commonEdge;
         for ( var i = 1; i < list.length; i++ ) {
             current = list[i];
-            commonEdge = SimpleMesh.getCommonEdgeOfVertPair( previous, current );
+            commonEdge = setalg.n( previous.edges, current.edges );
             if ( commonEdge.size < 1 ) {
                 throw new TypeError('Degenerate vert-loop!');
             }
             edges.push( [ ...commonEdge ][0] );
             previous = current;
         }
-        commonEdge = SimpleMesh.getCommonEdgeOfVertPair( list[list.length-1], list[0] );
+        commonEdge = setalg.n( list[list.length-1].edges, list[0].edges );
         if ( commonEdge.size < 1 ) {
             throw new TypeError('Degenerate vert-loop!');
         }
