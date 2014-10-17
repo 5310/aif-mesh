@@ -4,29 +4,29 @@
     
     mesh = new aifm.SimpleMesh();
     
-    var v0 = mesh.addVert( 0, 0 );
-    var v1 = mesh.addVert( 1, 0 );
-    var v2 = mesh.addVert( 0, 1 );
-    var v3 = mesh.addVert( -1, 0 );
-    var v4 = mesh.addVert( 0, -1 );
-    var v5 = mesh.addVert( 1, -1 );
-    var v6 = mesh.addVert( 1, -1, 1 );
-    var v7 = mesh.addVert( -1, -1, 1 );
+    var v0 = mesh.addVertByCoords( 0, 0 );
+    var v1 = mesh.addVertByCoords( 1, 0 );
+    var v2 = mesh.addVertByCoords( 0, 1 );
+    var v3 = mesh.addVertByCoords( -1, 0 );
+    var v4 = mesh.addVertByCoords( 0, -1 );
+    var v5 = mesh.addVertByCoords( 1, -1 );
+    var v6 = mesh.addVertByCoords( 1, -1, 1 );
+    var v7 = mesh.addVertByCoords( -1, -1, 1 );
     
-    var e1 = mesh.addEdge( v0, v1 );
-    var e2 = mesh.addEdge( v0, v2 );
-    var e3 = mesh.addEdge( v0, v3 );
-    var e4 = mesh.addEdge( v0, v4 );
-    var e5 = mesh.addEdge( v4, v5 );
-    var e6 = mesh.addEdge( v5, v1 );
-    var e7 = mesh.addEdge( v4, v6 );
-    var e8 = mesh.addEdge( v6, v0 );
-    var e9 = mesh.addEdge( v4, v7 );
-    var e10 = mesh.addEdge( v7, v0 );
+    var e1 = mesh.addEdgeByVertPair( v0, v1 );
+    var e2 = mesh.addEdgeByVertPair( v0, v2 );
+    var e3 = mesh.addEdgeByVertPair( v0, v3 );
+    var e4 = mesh.addEdgeByVertPair( v0, v4 );
+    var e5 = mesh.addEdgeByVertPair( v4, v5 );
+    var e6 = mesh.addEdgeByVertPair( v5, v1 );
+    var e7 = mesh.addEdgeByVertPair( v4, v6 );
+    var e8 = mesh.addEdgeByVertPair( v6, v0 );
+    var e9 = mesh.addEdgeByVertPair( v4, v7 );
+    var e10 = mesh.addEdgeByVertPair( v7, v0 );
 
-    var f1 = mesh.addFace( [ e1, e6, e5, e4 ] );
-    var f2 = mesh.addFace( [ e4, e8, e7 ] );
-    var f3 = mesh.addFace( [ e4, e9, e10 ] );
+    var f1 = mesh.addFaceByEdgeLoop( [ e1, e6, e5, e4 ] );
+    var f2 = mesh.addFaceByVertLoop( [ v0, v4, v6 ] );
+    var f3 = mesh.addFaceByEdgeLoop( [ e4, e9, e10 ] );
     
     console.log( [ element.id for ( element of v0.$verts() ) ].sort() ); // 1 2 3 4 6 7
     console.log( [ v1.id, v2.id, v3.id, v4.id, v6.id, v7.id ].sort() ); // 1 2 3 4 6 7
