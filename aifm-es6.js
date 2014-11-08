@@ -104,7 +104,7 @@
         return results;
     };
     Vert.prototype.$edges = function $edges() {
-        return this.edges;
+        return new ElementSet( this.edges );
     };
     Vert.prototype.$faces = function $faces() {
         var results = new ElementSet();
@@ -139,7 +139,7 @@
         return results;
     };
     Edge.prototype.$faces = function $faces() {
-        return this.faces;
+        return new ElementSet( this.faces );
     };
 
 
@@ -157,7 +157,7 @@
         return results;
     };
     Face.prototype.$edges = function $edges() {
-        return this.edges;
+        return new ElementSet( this.edges );
     };
     Face.prototype.$faces = function $faces() {
         var results = new ElementSet();
